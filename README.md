@@ -62,25 +62,31 @@ Target Host IP Address: `192.168.122.105` (to be configured)
 
 Target Host IP Address Netmask Prefix: `24` (to be configured)
 
-0. Clear Target Host networking configurations - Target Host
+1. Clear Target Host networking configurations - Target Host
 
 ```
 # nmcli connection delete enp1s0
 ```
 
-1. Start ARP Stuffing Server - Target Host
+2. Add Target Host Interface's MAC Address into Send Host ARP table - Sender Host
+
+```
+$ sudo arp -s 192.168.122.105 '52:54:00:1a:87:5d'
+```
+
+3. Start ARP Stuffing Server - Target Host
 
 ```
 # ./arp-stuffing-server.py --interface enp1s0 --netmask 24
 ```
 
-2. Send ICMP Echo Request by ping command - Sender Host
+4. Send ICMP Echo Request by ping command - Sender Host
 
 ```
 $ ping -c 5 192.168.122.105
 ```
 
-3. ARP Stuffing Server receives the ICMP Echo Request packet and set up networking configurations - Target Host
+5. ARP Stuffing Server receives the ICMP Echo Request packet and set up networking configurations - Target Host
 
 ```
 ##### ICMP Echo Request Packet Data Payload Fields #####
@@ -98,7 +104,7 @@ The interface enp1s0 is up.
 Network configuration setup done.
 ```
 
-4. Once Target Host IP is set up done, ping command starts to receive the ICMP Echo Reply packets from Target Host - Sender Host
+6. Once Target Host IP is set up done, ping command starts to receive the ICMP Echo Reply packets from Target Host - Sender Host
 
 ```
 [... continues from ping command output ...]
@@ -115,7 +121,7 @@ rtt min/avg/max/mdev = 0.503/0.620/0.763/0.108 ms
 
 The first ICMP Echo Request packet is *lost* because this packet is used by ARP Stuffing Server to configure networking configurations and ARP Stuffing Server **DOES NOT** reply to the ICMP Echo Request packet. I want to leave all ICMP Request Reply packets handling to OS.
 
-5. Target Host networking configurations are set up done - Target Host
+7. Target Host networking configurations are set up done - Target Host
 
 ```
 # ip link show dev enp1s0
