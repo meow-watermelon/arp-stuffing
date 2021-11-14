@@ -124,4 +124,3 @@ if __name__ == '__main__':
     else:
         print('Failed to set up network configuration.')
         sys.exit(3)
-    print()
