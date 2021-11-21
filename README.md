@@ -139,7 +139,7 @@ Now, user can connect to Target Host to set up other network parameters like gat
 
 ## Notes and Thoughts
 
-1. The IP address netmask would be `255.255.255.255` if we don't specify the netmask prefix.
+1. The IP address netmask would be `255.255.255.255` if we don't specify the netmask prefix in `ip` command.
 
 2. **DO NOT** run ARP Stuffing Server on a host that has networking configuration set up properly already. This may cause unpredictable results. Remember, ARP Stuffing should be only used for devices that don't have networking configurations.
 
